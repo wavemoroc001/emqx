@@ -1,0 +1,9 @@
+{"2.0.1",
+ [{"0.2.0",
+   [{load_module,lwm2m_coap_client,brutal_purge,soft_purge,[]},
+    {load_module,coap_core_link,brutal_purge,soft_purge,[]}]},
+  {<<".*">>,[]}],
+ [{"0.2.0",
+   [{load_module,lwm2m_coap_client,brutal_purge,soft_purge,[]},
+    {load_module,coap_core_link,brutal_purge,soft_purge,[]}]},
+  {<<".*">>,[]}]}.

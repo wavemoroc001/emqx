@@ -1,0 +1,28 @@
+# Run these command before start service 
+# sudo chown -R 1000:1000 etc data log
+# sudo chmod -R 770 etc data log
+
+services: 
+  emqx:
+    container_name: emqx-broker
+    image: emqx/emqx:4.4.1
+    environment: 
+    -  name:node1
+    -  host:node1.emqx.io
+    -  cluster.discovery:static
+    -  cluster.static.seeds:[emqx@node1.emqx.io,emqx@node2.emqx.io]
+    -  zone.external.retry.interval:2s
+    -  mqtt.max.topic.alias:10
+    -  EMQX_LOADED_PLUGINS="emqx_auth_mnesia"
+    ports:
+      - 1883:1883
+      - 18083:18083
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 5s
+      timeout: 25s
+      retries: 5
+    volumes:
+      - ./emqx/log:/opt/emqx/log
+      - ./emqx/etc:/opt/emqx/etc
+      - ./emqx/data:/opt/emqx/data  
