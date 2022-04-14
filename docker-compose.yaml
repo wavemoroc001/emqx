@@ -4,16 +4,13 @@
 
 services: 
   emqx:
-    container_name: emqx-broker
+    container_name: emqx
     image: emqx/emqx:4.4.1
+    restart: unless-stopped
     environment: 
-    -  name:node1
-    -  host:node1.emqx.io
-    -  cluster.discovery:static
-    -  cluster.static.seeds:[emqx@node1.emqx.io,emqx@node2.emqx.io]
-    -  zone.external.retry.interval:2s
-    -  mqtt.max.topic.alias:10
-    -  EMQX_LOADED_PLUGINS="emqx_auth_mnesia"
+    - EMQX_NAME=emqx
+    - EMQX_CLUSTER__DISCOVERY=static
+    - EMQX_LOADED_PLUGINS="emqx_auth_mnesia,emqx_prometheus"
     ports:
       - 1883:1883
       - 18083:18083
@@ -25,4 +22,14 @@ services:
     volumes:
       - ./emqx/log:/opt/emqx/log
       - ./emqx/etc:/opt/emqx/etc
-      - ./emqx/data:/opt/emqx/data  
+      - ./emqx/data:/opt/emqx/data 
+      - "/etc/timezone:/etc/timezone:ro"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      tig-network: 
+        ipv4_address: 192.168.1.1
+
+networks:
+  tig-network:
+    external:
+      name: tig-network

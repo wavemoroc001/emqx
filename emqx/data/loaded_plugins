@@ -4,5 +4,5 @@ emqx_recon.
 emqx_retainer.
 emqx_telemetry.
 emqx_rule_engine.
-
+{emqx_prometheus, true}.
 {emqx_auth_mnesia, true}.
